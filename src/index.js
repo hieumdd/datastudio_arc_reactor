@@ -3,7 +3,6 @@ const Chart = require('chart.js');
 require('chartjs-plugin-piechart-outlabels');
 const d3 = require('d3-scale-chromatic');
 const local = require('./localMessage');
-// const interpolateColors = require('./utils');
 
 const margin = {
   top: 10,
@@ -30,7 +29,7 @@ const calculatePoint = (i, intervalSize, colorRangeInfo) => {
 };
 
 const interpolateColors = (dataLength, colorRangeInfo) => {
-  const colorScale = d3.interpolateBlues;
+  const colorScale = d3.interpolateGreys;
   const { colorStart, colorEnd } = colorRangeInfo;
   const colorRange = colorEnd - colorStart;
   const intervalSize = colorRange / dataLength;
@@ -46,62 +45,59 @@ const interpolateColors = (dataLength, colorRangeInfo) => {
   return colorArray;
 };
 
+const colorRangeInfo = {
+  colorStart: 0.3,
+  colorEnd: 1,
+  useEndAsStart: false,
+};
+
 const drawViz = (data) => {
   const ctx = canvasElement.getContext('2d');
   ctx.clearRect(0, 0, canvasElement.width, canvasElement.height);
-  const colorRangeInfo = {
-    colorStart: 0,
-    colorEnd: 1,
-    useEndAsStart: false,
-  };
 
   const datasets = [];
+
   for (let i = 0; i < data.fields.metricID.length; i++) {
-    datasets.push(
-      data.tables.DEFAULT.reduce(
-        (acc, cur) => {
-          acc.labels.push(cur.dimID[0]);
-          acc.datasets[0].data.push(1);
-          acc.datasets[0].actualData.push(cur.metricID[i]);
-          acc.datasets[0].backgroundColor = interpolateColors(
-            acc.datasets[0].data.length,
-            colorRangeInfo,
-          );
-          return acc;
-        },
-        {
-          labels: [],
-          datasets: [
-            {
-              label: data.fields.metricID[i].name,
-              data: [],
-              actualData: [],
-              backgroundColor: [],
-            },
-          ],
-        },
+    datasets.push({
+      label: data.fields.metricID[i].name,
+      data: data.tables.DEFAULT.map(() => 1),
+      actualData: data.tables.DEFAULT.map((_data) => _data.metricID[i]),
+      backgroundColor: interpolateColors(
+        data.tables.DEFAULT.map((_data) => _data.metricID[i]).length,
+        colorRangeInfo,
       ),
-    );
+      outlabels: {
+        display: i === 0,
+        text: '%l',
+        color: 'white',
+        backgroundColor: 'black',
+        stretch: 45,
+        font: {
+          resizable: true,
+          minSize: 12,
+          maxSize: 18,
+        },
+      },
+    });
   }
+  console.log(datasets);
 
-  const impressionsDataset = datasets.filter(
-    (dataset) => dataset.datasets[0].label === 'impressions',
-  )[0];
-
-  console.log(impressionsDataset.datasets[0]);
-
-  const impressionsChart = {
-    label: 'Impressions',
+  const doughnutChart = new Chart(ctx, {
     type: 'doughnut',
-    data: impressionsDataset.datasets[0].data,
-    backgroundColor: impressionsDataset.datasets[0].backgroundColor,
+    data: {
+      labels: data.tables.DEFAULT.map((_dim) => _dim.dimID[0]),
+      datasets,
+    },
     options: {
+      legend: {
+        display: false,
+      },
       tooltips: {
         mode: 'nearest',
         intersect: false,
         callbacks: {
           label(tooltipItem, data) {
-            const label = data.labels[tooltipItem.index];
+            const { label } = data.datasets[tooltipItem.datasetIndex];
             const value =
               data.datasets[tooltipItem.datasetIndex].actualData[
                 tooltipItem.index
@@ -111,43 +107,18 @@ const drawViz = (data) => {
         },
       },
       plugins: {
-        outlabels: {
-          text: '%l',
-          color: 'black',
-          backgroundColor: 'white',
-          stretch: 45,
-          font: {
-            resizable: true,
-            minSize: 12,
-            maxSize: 18,
-          },
-        },
-      },
-    },
-  };
-
-  const doughnutChart = new Chart(ctx, {
-    type: 'doughnut',
-    labels: impressionsDataset.datasets[0].labels,
-    data: {
-      datasets: [impressionsChart, impressionsChart],
-    },
-    options: {
-      legend: {
-        display: false,
-      },
-      plugins: {
-        outlabels: {
-          text: '%l',
-          color: 'black',
-          backgroundColor: 'white',
-          stretch: 45,
-          font: {
-            resizable: true,
-            minSize: 12,
-            maxSize: 18,
-          },
-        },
+        // outlabels: {
+        //   display: false,
+        //   text: '%l',
+        //   color: 'black',
+        //   backgroundColor: 'white',
+        //   stretch: 45,
+        //   font: {
+        //     resizable: true,
+        //     minSize: 12,
+        //     maxSize: 18,
+        //   },
+        // },
       },
     },
   });
