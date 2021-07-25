@@ -1,28 +1,28 @@
-export const message = { // eslint-disable-line
+export const message = {
   tables: {
     DEFAULT: [
       {
         dimID: ['Email'],
-        metricID: [33, 32, 31, 31, 20],
+        metricID: [24, 16, 24, 32, 16],
       },
       {
         dimID: ['SMS'],
-        metricID: [20, 20, 23, 28, 13],
-      },
-      {
-        dimID: ['Facebook'],
-        metricID: [20, 27, 30, 12, 21],
+        metricID: [24, 26, 28, 17, 20],
       },
       {
         dimID: ['Google'],
-        metricID: [15, 29, 22, 28, 26],
+        metricID: [23, 15, 30, 22, 20],
+      },
+      {
+        dimID: ['Facebook'],
+        metricID: [21, 15, 27, 23, 16],
       },
     ],
   },
   fields: {
     dimID: [
       {
-        id: 'qt_pem0nlixlc',
+        id: 'qt_y5e3muxxlc',
         name: 'source',
         type: 'TEXT',
         concept: 'DIMENSION',
@@ -30,42 +30,38 @@ export const message = { // eslint-disable-line
     ],
     metricID: [
       {
-        id: 'qt_cjhvjlixlc',
+        id: 'qt_z5e3muxxlc',
         name: 'impressions',
         type: 'NUMBER',
         concept: 'METRIC',
       },
       {
-        id: 'qt_hzp3rlixlc',
+        id: 'qt_sv79zuxxlc',
         name: 'isqls',
         type: 'NUMBER',
         concept: 'METRIC',
       },
       {
-        id: 'qt_6o29slixlc',
+        id: 'qt_xvir1uxxlc',
         name: 'msqls',
         type: 'NUMBER',
         concept: 'METRIC',
       },
       {
-        id: 'qt_bvy5tlixlc',
+        id: 'qt_y28a3uxxlc',
         name: 'sqls',
         type: 'NUMBER',
         concept: 'METRIC',
       },
       {
-        id: 'qt_w5m8vlixlc',
+        id: 'qt_zz1h4uxxlc',
         name: 'closed_won',
         type: 'NUMBER',
         concept: 'METRIC',
       },
     ],
   },
-  style: {
-    cutoffPercentage: {
-      value: 60,
-    },
-  },
+  style: {},
   theme: {
     themeFillColor: {
       color: '#ffffff',

@@ -62,7 +62,7 @@ const drawViz = (data) => {
       datasets,
     },
     options: {
-      cutoutPercentage: data.style.cutoffPercentage.value,
+      cutoutPercentage: 60,
       legend: {
         display: false,
       },
@@ -71,6 +71,7 @@ const drawViz = (data) => {
         intersect: true,
         callbacks: {
           label(tooltipItem, data) {
+            console.log(dscc.getHeight(), dscc.getWidth());
             const { label } = data.datasets[tooltipItem.datasetIndex];
             const value =
               data.datasets[tooltipItem.datasetIndex].actualData[
@@ -83,8 +84,9 @@ const drawViz = (data) => {
     },
   });
 };
+const LOCAL = true;
 
-if (DSCC_IS_LOCAL) {  // eslint-disable-line
+if (LOCAL) {
   drawViz(local.message);
 } else {
   dscc.subscribeToData(drawViz, { transform: dscc.objectTransform });
