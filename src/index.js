@@ -1,7 +1,6 @@
 const dscc = require('@google/dscc');
 const Chart = require('chart.js');
 require('chartjs-plugin-piechart-outlabels');
-const d3Scale = require('d3-scale-chromatic');
 const d3Interpolate = require('d3-interpolate');
 const local = require('./localMessage');
 
@@ -16,7 +15,7 @@ const height = dscc.getHeight() - margin.top - margin.bottom;
 const width = dscc.getWidth() - margin.left - margin.right;
 
 const canvasElement = document.createElement('canvas');
-// const ctx = canvasElement.getContext('2d'); // eslint-disable-line
+const ctx = canvasElement.getContext('2d'); // eslint-disable-line
 canvasElement.id = 'chart';
 canvasElement.height = height;
 canvasElement.width = width;
@@ -28,7 +27,6 @@ const itp = (values) => {
   const max = Math.max(...values);
   const min = Math.min(...values);
   const normalized = values.map((val) => (val - min) / (max - min));
-  // return normalized.map((val) => d3Scale.interpolateReds(val));
   return normalized.map((val) => interpolator(val));
 };
 
@@ -45,7 +43,7 @@ const drawViz = (data) => {
       backgroundColor: itp(
         data.tables.DEFAULT.map((_data) => _data.metricID[i]),
       ),
-      borderColor: 'rgba(0, 0, 0, 0.1)',
+      borderWidth: 5,
       outlabels: {
         display: i === 0,
         text: '%l',
@@ -60,8 +58,7 @@ const drawViz = (data) => {
       },
     });
   }
-  const doughnutChart = new Chart(ctx, {
-    // eslint-disable-line
+  const doughnutChart = new Chart(ctx, { // eslint-disable-line
     type: 'doughnut',
     data: {
       labels: data.tables.DEFAULT.map((_dim) => _dim.dimID[0]),
@@ -69,7 +66,14 @@ const drawViz = (data) => {
     },
     options: {
       cutoutPercentage: 40,
-      borderColor: 'rgba(0, 0, 0, 0.1)',
+      layout: {
+        padding: {
+          left: 0,
+          right: 0,
+          top: 50,
+          bottom: 50,
+        },
+      },
       legend: {
         display: false,
       },
@@ -78,7 +82,6 @@ const drawViz = (data) => {
         intersect: true,
         callbacks: {
           label(tooltipItem, data) {
-            // console.log(dscc.getHeight(), dscc.getWidth());
             const { label } = data.datasets[tooltipItem.datasetIndex];
             const value =
               data.datasets[tooltipItem.datasetIndex].actualData[
@@ -91,7 +94,7 @@ const drawViz = (data) => {
     },
   });
 };
-const LOCAL = true;
+const LOCAL = false;
 
 if (LOCAL) {
   drawViz(local.message);
