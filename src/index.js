@@ -21,34 +21,11 @@ canvasElement.height = height;
 canvasElement.width = width;
 document.body.appendChild(canvasElement);
 
-const calculatePoint = (i, intervalSize, colorRangeInfo) => {
-  const { colorStart, colorEnd, useEndAsStart } = colorRangeInfo;
-  return useEndAsStart
-    ? colorEnd - i * intervalSize
-    : colorStart + i * intervalSize;
-};
-
-const interpolateColors = (dataLength, colorRangeInfo) => {
-  const colorScale = d3.interpolateGreys;
-  const { colorStart, colorEnd } = colorRangeInfo;
-  const colorRange = colorEnd - colorStart;
-  const intervalSize = colorRange / dataLength;
-  let i;
-  let colorPoint;
-  const colorArray = [];
-
-  for (i = 0; i < dataLength; i++) {
-    colorPoint = calculatePoint(i, intervalSize, colorRangeInfo);
-    colorArray.push(colorScale(colorPoint));
-  }
-
-  return colorArray;
-};
-
-const colorRangeInfo = {
-  colorStart: 0.3,
-  colorEnd: 1,
-  useEndAsStart: false,
+const itp = (values) => {
+  const max = Math.max(...values);
+  const min = Math.min(...values);
+  const normalized = values.map((val) => (val - min) / (max - min) + 0.1);
+  return normalized.map((val) => d3.interpolateGreys(val));
 };
 
 const drawViz = (data) => {
@@ -56,15 +33,13 @@ const drawViz = (data) => {
   ctx.clearRect(0, 0, canvasElement.width, canvasElement.height);
 
   const datasets = [];
-
   for (let i = 0; i < data.fields.metricID.length; i++) {
     datasets.push({
       label: data.fields.metricID[i].name,
       data: data.tables.DEFAULT.map(() => 1),
       actualData: data.tables.DEFAULT.map((_data) => _data.metricID[i]),
-      backgroundColor: interpolateColors(
-        data.tables.DEFAULT.map((_data) => _data.metricID[i]).length,
-        colorRangeInfo,
+      backgroundColor: itp(
+        data.tables.DEFAULT.map((_data) => _data.metricID[i]),
       ),
       outlabels: {
         display: i === 0,
@@ -80,21 +55,20 @@ const drawViz = (data) => {
       },
     });
   }
-  console.log(datasets);
-
-  const doughnutChart = new Chart(ctx, {
+  const doughnutChart = new Chart(ctx, {  // eslint-disable-line
     type: 'doughnut',
     data: {
       labels: data.tables.DEFAULT.map((_dim) => _dim.dimID[0]),
       datasets,
     },
     options: {
+      cutoutPercentage: data.style.cutoffPercentage.value,
       legend: {
         display: false,
       },
       tooltips: {
         mode: 'nearest',
-        intersect: false,
+        intersect: true,
         callbacks: {
           label(tooltipItem, data) {
             const { label } = data.datasets[tooltipItem.datasetIndex];
@@ -106,26 +80,11 @@ const drawViz = (data) => {
           },
         },
       },
-      plugins: {
-        // outlabels: {
-        //   display: false,
-        //   text: '%l',
-        //   color: 'black',
-        //   backgroundColor: 'white',
-        //   stretch: 45,
-        //   font: {
-        //     resizable: true,
-        //     minSize: 12,
-        //     maxSize: 18,
-        //   },
-        // },
-      },
     },
   });
 };
 
-if (DSCC_IS_LOCAL) {
-  // eslint-disable-line
+if (DSCC_IS_LOCAL) {  // eslint-disable-line
   drawViz(local.message);
 } else {
   dscc.subscribeToData(drawViz, { transform: dscc.objectTransform });

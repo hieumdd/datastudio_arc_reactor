@@ -25,5 +25,18 @@
       ]
     }
   ],
-  "style": [ ]
+  "style": [
+    {
+      "id": "layout",
+      "label": "Layout",
+      "elements": [
+        {
+          "id": "cutoffPercentage",
+          "label": "Cutoff Percentage",
+          "type": "INTERVAL",
+          "defaultValue": "60"
+        }
+      ]
+    }
+  ]
 }

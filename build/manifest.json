@@ -1,7 +1,7 @@
 {
-  "name": "My Visualizations",
-  "organization": "MyOrg",
-  "description": "My first visualization package.",
+  "name": "Arc Reactor Chart",
+  "organization": "Eaglytics",
+  "description": "Arc Reactor Chart",
   "logoUrl": "https://logo",
   "organizationUrl": "https://url",
   "supportUrl": "https://url",
@@ -11,8 +11,8 @@
   "devMode": true,
   "components": [
     {
-      "name": "myViz",
-      "description": "My first Community Visualization",
+      "name": "Arc Reactor Chart",
+      "description": "Arc Reactor Chart",
       "iconUrl": "https://url",
       "resource": {
         "js": "gs://datastudio_custom_viz/chartjs/dev/index.js",

@@ -61,7 +61,11 @@ export const message = { // eslint-disable-line
       },
     ],
   },
-  style: {},
+  style: {
+    cutoffPercentage: {
+      value: 60,
+    },
+  },
   theme: {
     themeFillColor: {
       color: '#ffffff',

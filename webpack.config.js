@@ -2,7 +2,9 @@ const path = require('path');
 const fs = require('fs');
 const webpack = require('webpack');
 const CopyWebpackPlugin = require('copy-webpack-plugin');
-const {getBuildableComponents} = require('@google/dscc-scripts/build/viz/util');
+const {
+  getBuildableComponents,
+} = require('@google/dscc-scripts/build/viz/util');
 
 const components = getBuildableComponents();
 const componentIndexToBuild = Number(process.env.WORKING_COMPONENT_INDEX) || 0;
