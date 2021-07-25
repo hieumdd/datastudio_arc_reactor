@@ -1,7 +1,8 @@
 const dscc = require('@google/dscc');
 const Chart = require('chart.js');
 require('chartjs-plugin-piechart-outlabels');
-const d3 = require('d3-scale-chromatic');
+const d3Scale = require('d3-scale-chromatic');
+const d3Interpolate = require('d3-interpolate');
 const local = require('./localMessage');
 
 const margin = {
@@ -15,17 +16,20 @@ const height = dscc.getHeight() - margin.top - margin.bottom;
 const width = dscc.getWidth() - margin.left - margin.right;
 
 const canvasElement = document.createElement('canvas');
-const ctx = canvasElement.getContext('2d'); // eslint-disable-line
-canvasElement.id = 'myViz';
+// const ctx = canvasElement.getContext('2d'); // eslint-disable-line
+canvasElement.id = 'chart';
 canvasElement.height = height;
 canvasElement.width = width;
 document.body.appendChild(canvasElement);
 
+const interpolator = d3Interpolate.interpolateRgb('#ff0008', '#ffc3c5');
+
 const itp = (values) => {
   const max = Math.max(...values);
   const min = Math.min(...values);
-  const normalized = values.map((val) => (val - min) / (max - min) + 0.1);
-  return normalized.map((val) => d3.interpolateGreys(val));
+  const normalized = values.map((val) => (val - min) / (max - min));
+  // return normalized.map((val) => d3Scale.interpolateReds(val));
+  return normalized.map((val) => interpolator(val));
 };
 
 const drawViz = (data) => {
@@ -41,11 +45,12 @@ const drawViz = (data) => {
       backgroundColor: itp(
         data.tables.DEFAULT.map((_data) => _data.metricID[i]),
       ),
+      borderColor: 'rgba(0, 0, 0, 0.1)',
       outlabels: {
         display: i === 0,
         text: '%l',
-        color: 'white',
-        backgroundColor: 'black',
+        color: 'black',
+        backgroundColor: 'white',
         stretch: 45,
         font: {
           resizable: true,
@@ -55,14 +60,16 @@ const drawViz = (data) => {
       },
     });
   }
-  const doughnutChart = new Chart(ctx, {  // eslint-disable-line
+  const doughnutChart = new Chart(ctx, {
+    // eslint-disable-line
     type: 'doughnut',
     data: {
       labels: data.tables.DEFAULT.map((_dim) => _dim.dimID[0]),
       datasets,
     },
     options: {
-      cutoutPercentage: 60,
+      cutoutPercentage: 40,
+      borderColor: 'rgba(0, 0, 0, 0.1)',
       legend: {
         display: false,
       },
@@ -71,7 +78,7 @@ const drawViz = (data) => {
         intersect: true,
         callbacks: {
           label(tooltipItem, data) {
-            console.log(dscc.getHeight(), dscc.getWidth());
+            // console.log(dscc.getHeight(), dscc.getWidth());
             const { label } = data.datasets[tooltipItem.datasetIndex];
             const value =
               data.datasets[tooltipItem.datasetIndex].actualData[
