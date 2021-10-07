@@ -21,7 +21,7 @@ canvasElement.height = height;
 canvasElement.width = width;
 document.body.appendChild(canvasElement);
 
-const interpolator = d3Interpolate.interpolateRgb('#ff0008', '#ffc3c5');
+const interpolator = d3Interpolate.interpolateRgb('#ffc3c5', '#ff0008');
 
 const itp = (values) => {
   const max = Math.max(...values);
@@ -58,7 +58,7 @@ const drawViz = (data) => {
       },
     });
   }
-  const doughnutChart = new Chart(ctx, { // eslint-disable-line
+  const doughnutChart = new Chart(ctx, {
     type: 'doughnut',
     data: {
       labels: data.tables.DEFAULT.map((_dim) => _dim.dimID[0]),

@@ -19,7 +19,7 @@ export const message = {
       },
       {
         dimID: ['Email'],
-        metricID: [24, 16, 24, 32, 16],
+        metricID: [0, 16, 24, 32, 16],
       },
       {
         dimID: ['SMS'],
