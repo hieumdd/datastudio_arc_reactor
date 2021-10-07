@@ -16,7 +16,9 @@
     "push:dev": "dscc-scripts viz push -d dev",
     "push:prod": "dscc-scripts viz push -d prod",
     "update_message": "dscc-scripts viz update_message -f object",
-    "start": "dscc-scripts viz start"
+    "start": "dscc-scripts viz start",
+    "devprod": "gsutil -m cp -r gs://datastudio_custom_viz/chartjs/dev gs://datastudio_custom_viz/chartjs/prod",
+    "deploy": "npm run build:dev && npm run push:dev && npm run devprod"
   },
   "devDependencies": {
     "@google/dscc": "^0.3.17",

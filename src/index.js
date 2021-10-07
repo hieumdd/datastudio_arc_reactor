@@ -15,13 +15,16 @@ const height = dscc.getHeight() - margin.top - margin.bottom;
 const width = dscc.getWidth() - margin.left - margin.right;
 
 const canvasElement = document.createElement('canvas');
-const ctx = canvasElement.getContext('2d'); // eslint-disable-line
+const ctx = canvasElement.getContext('2d');
 canvasElement.id = 'chart';
 canvasElement.height = height;
 canvasElement.width = width;
 document.body.appendChild(canvasElement);
 
-const interpolator = d3Interpolate.interpolateRgb('#ffc3c5', '#ff0008');
+const lowestHex = '#ffc3c5';
+const lowestRGB = 'rgb(255, 195, 197)';
+const highestHex = '#ff0008';
+const interpolator = d3Interpolate.interpolateRgb(lowestHex, highestHex);
 
 const itp = (values) => {
   const max = Math.max(...values);
@@ -34,15 +37,16 @@ const drawViz = (data) => {
   const ctx = canvasElement.getContext('2d');
   ctx.clearRect(0, 0, canvasElement.width, canvasElement.height);
 
-  const datasets = [];
-  for (let i = 0; i < data.fields.metricID.length; i++) {
-    datasets.push({
-      label: data.fields.metricID[i].name,
+  const datasets = data.fields.metricID.map((metric, i) => {
+    const actualData = data.tables.DEFAULT.map(({ metricID }) => metricID[i]);
+    backgroundColor = actualData.every((i) => i == '0')
+      ? data.tables.DEFAULT.map((_) => lowestRGB)
+      : itp(actualData);
+    return {
+      label: metric.name,
       data: data.tables.DEFAULT.map(() => 1),
-      actualData: data.tables.DEFAULT.map((_data) => _data.metricID[i]),
-      backgroundColor: itp(
-        data.tables.DEFAULT.map((_data) => _data.metricID[i]),
-      ),
+      actualData,
+      backgroundColor,
       borderWidth: 5,
       outlabels: {
         display: i === 0,
@@ -56,12 +60,14 @@ const drawViz = (data) => {
           maxSize: 18,
         },
       },
-    });
-  }
+    };
+  });
+  console.log(datasets);
+
   const _ = new Chart(ctx, {
     type: 'doughnut',
     data: {
-      labels: data.tables.DEFAULT.map((_dim) => _dim.dimID[0]),
+      labels: data.tables.DEFAULT.map(({ dimID }) => dimID[0]),
       datasets,
     },
     options: {

@@ -3,35 +3,35 @@ export const message = {
     DEFAULT: [
       {
         dimID: ['Email'],
-        metricID: [24, 16, 24, 32, 16],
-      },
-      {
-        dimID: ['SMS'],
-        metricID: [24, 26, 28, 17, 20],
-      },
-      {
-        dimID: ['Google'],
-        metricID: [23, 15, 30, 22, 20],
-      },
-      {
-        dimID: ['Facebook'],
-        metricID: [21, 15, 27, 23, 16],
-      },
-      {
-        dimID: ['Email'],
         metricID: [0, 16, 24, 32, 16],
       },
       {
         dimID: ['SMS'],
-        metricID: [24, 26, 28, 17, 20],
+        metricID: [4, 26, 28, 17, 20],
       },
       {
         dimID: ['Google'],
-        metricID: [23, 15, 30, 22, 20],
+        metricID: [8, 15, 30, 22, 20],
       },
       {
         dimID: ['Facebook'],
-        metricID: [21, 15, 27, 23, 16],
+        metricID: [12, 15, 27, 23, 16],
+      },
+      {
+        dimID: ['Email'],
+        metricID: [16, 16, 24, 32, 16],
+      },
+      {
+        dimID: ['SMS'],
+        metricID: [20, 26, 28, 17, 20],
+      },
+      {
+        dimID: ['Google'],
+        metricID: [24, 15, 30, 22, 20],
+      },
+      {
+        dimID: ['Facebook'],
+        metricID: [28, 15, 27, 23, 16],
       },
     ],
   },
