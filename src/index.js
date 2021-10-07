@@ -58,7 +58,7 @@ const drawViz = (data) => {
       },
     });
   }
-  const doughnutChart = new Chart(ctx, {
+  const _ = new Chart(ctx, {
     type: 'doughnut',
     data: {
       labels: data.tables.DEFAULT.map((_dim) => _dim.dimID[0]),
