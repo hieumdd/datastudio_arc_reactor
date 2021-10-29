@@ -19,7 +19,7 @@
           "type": "METRIC",
           "options": {
             "min": 1,
-            "max": 5
+            "max": 10
           }
         }
       ]

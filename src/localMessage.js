@@ -3,35 +3,35 @@ export const message = {
     DEFAULT: [
       {
         dimID: ['Email'],
-        metricID: [0, 16, 24, 32, 16],
+        metricID: [0, 16, 24, 32, 16, 10],
       },
       {
         dimID: ['SMS'],
-        metricID: [4, 26, 28, 17, 20],
+        metricID: [4, 26, 28, 17, 20, 20],
       },
       {
         dimID: ['Google'],
-        metricID: [8, 15, 30, 22, 20],
+        metricID: [8, 15, 30, 22, 20, 50],
       },
       {
         dimID: ['Facebook'],
-        metricID: [12, 15, 27, 23, 16],
+        metricID: [12, 15, 27, 23, 16, 80],
       },
       {
         dimID: ['Email'],
-        metricID: [16, 16, 24, 32, 16],
+        metricID: [16, 16, 24, 32, 16, 100],
       },
       {
         dimID: ['SMS'],
-        metricID: [20, 26, 28, 17, 20],
+        metricID: [20, 26, 28, 17, , 70],
       },
       {
         dimID: ['Google'],
-        metricID: [24, 15, 30, 22, 20],
+        metricID: [24, 15, 30, 22, 20, 70],
       },
       {
         dimID: ['Facebook'],
-        metricID: [28, 15, 27, 23, 16],
+        metricID: [28, 15, 27, 23, 16, 70],
       },
     ],
   },
@@ -72,6 +72,12 @@ export const message = {
       {
         id: 'qt_zz1h4uxxlc',
         name: 'closed_won',
+        type: 'NUMBER',
+        concept: 'METRIC',
+      },
+      {
+        id: 'qt_zz12323uxxlc',
+        name: 'super',
         type: 'NUMBER',
         concept: 'METRIC',
       },
