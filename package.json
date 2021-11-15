@@ -1,7 +1,7 @@
 {
   "dsccViz": {
-    "gcsDevBucket": "gs://datastudio_custom_viz/chartjs/dev",
-    "gcsProdBucket": "gs://datastudio_custom_viz/chartjs/prod",
+    "gcsDevBucket": "gs://arc-reactor-chart/chartjs/dev",
+    "gcsProdBucket": "gs://arc-reactor-chart/chartjs/prod",
     "components": [
       {
         "jsFile": "index.js",
@@ -17,7 +17,7 @@
     "push:prod": "dscc-scripts viz push -d prod",
     "update_message": "dscc-scripts viz update_message -f object",
     "start": "dscc-scripts viz start",
-    "devprod": "gsutil -m cp -r gs://datastudio_custom_viz/chartjs/dev gs://datastudio_custom_viz/chartjs/prod",
+    "devprod": "gsutil -m cp -r gs://arc-reactor-chart/chartjs/dev gs://arc-reactor-chart/chartjs/prod",
     "deploy": "npm run build:dev && npm run push:dev && npm run devprod"
   },
   "devDependencies": {

@@ -23,11 +23,11 @@ const args_1 = require("../args");
 const util_1 = require("../util");
 exports.validateBuildValues = (args) => {
     const components = exports.getBuildableComponents();
-    const devBucket = "gs://datastudio_custom_viz/chartjs/dev";
+    const devBucket = "gs://arc-reactor-chart/chartjs/dev";
     if (devBucket === undefined) {
         throw util_1.invalidVizConfig('gcsDevBucket');
     }
-    const prodBucket = "gs://datastudio_custom_viz/chartjs/prod";
+    const prodBucket = "gs://arc-reactor-chart/chartjs/prod";
     if (prodBucket === undefined) {
         throw util_1.invalidVizConfig('gcsProdBucket');
     }
